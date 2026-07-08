@@ -45,3 +45,4 @@ package-lock.json
 AGENTS.md
 *.zip
 *.7z
+.nvmrc
