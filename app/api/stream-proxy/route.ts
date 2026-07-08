@@ -114,8 +114,6 @@ export const GET = async (req: NextRequest) => {
 
     const { statusCode, headers, stream } = await connectShoutcast(host, port, path);
 
-    console.log("[stream-proxy] raw socket 응답 - status:", statusCode, "headers:", headers);
-
     if (statusCode !== 200) {
       stream.destroy();
       return new NextResponse(null, { status: statusCode || 502 });

@@ -1,5 +1,5 @@
 export interface SongListItem {
-  albumImage: string;
+  albumImage: string | null;
   title: string;
   artist: string | null;
   time: string;

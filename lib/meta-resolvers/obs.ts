@@ -27,7 +27,6 @@ export const ObsMetaFetcher: MetaFetcher = {
         songList: null,
       };
     } catch (err) {
-      console.log(metaUrl);
       console.error("[ObsMeta] 메타 조회 실패:", err);
       return null;
     }

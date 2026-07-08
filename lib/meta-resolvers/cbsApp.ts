@@ -74,7 +74,6 @@ export const CbsAppMetaFetcher: MetaFetcher = {
 
       const url = new URL(metaUrl);
       const applyExtra = url.hash === "#seoul";
-      console.log(applyExtra);
 
       let resolvedHomepageUrl = fallbackHomepageUrl;
       let resolvedSongListUrl: string | null = null;
@@ -152,8 +151,6 @@ export const CbsAppMetaFetcher: MetaFetcher = {
           console.error("[CbsAppMeta] 선곡 리스트 파싱 실패:", err);
         }
       }
-
-      console.log(songList);
       return {
         title: fullTitle,
         artist: timeRange,

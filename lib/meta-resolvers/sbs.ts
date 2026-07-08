@@ -45,9 +45,6 @@ const fetchSongList = async (progName: string) => {
     const homepageApiUrl = `https://static.apis.sbs.co.kr/program-api/1.0/menu/${progName}?platform=mobile`;
     const homepageMenu = await fetchJson(homepageApiUrl);
     const program = homepageMenu?.program;
-
-    console.log(homepageApiUrl);
-
     if (!program) return null;
 
     const progId = optStringOrNull(program, "programid") ?? "";
@@ -56,7 +53,6 @@ const fetchSongList = async (progName: string) => {
     const playListApiUrl = `https://apis.sbs.co.kr/radio-api/playlist/V${progId.slice(1)}/${today}`;
     const playListRoot: PlayListDataProps = await fetchJson(playListApiUrl);
     const playList: PlayListProps[] = playListRoot?.data?.playlist ?? [];
-    console.log(playListApiUrl);
 
     return (playList ?? []).map((songItem) => ({
       albumImage: songItem.ALBUM_IMG,
@@ -87,14 +83,7 @@ export const SbsMetaFetcher: MetaFetcher = {
       const progName = url.pathname.split("/").slice(-1);
       const songList = !progName ? null : await fetchSongList(progName[0]);
 
-      return {
-        title,
-        artist, // 진행자 이름 우선, 없으면 방송 시간대
-        thumbnailUrl,
-        homepageUrl,
-        songListUrl: null,
-        songList,
-      };
+      return { title, artist, thumbnailUrl, homepageUrl, songListUrl: null, songList };
     } catch (err) {
       console.error("[SbsMeta] 메타 조회 실패:", err);
       return null;

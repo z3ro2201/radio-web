@@ -45,6 +45,7 @@ export const stationToBroadcast = (
   streamUrl: station.url,
   streamType: station.streamType,
   jsonPath: station.jsonPath ?? null,
+  fetchBody: station.fetchBody ?? null,
   broadcastType: fileType,
   metaUrl: station.metaUrl ?? null,
   metaType: station.metaType ?? null,

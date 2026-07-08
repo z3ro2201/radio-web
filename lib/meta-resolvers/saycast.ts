@@ -4,8 +4,8 @@ import { fetchJson, optStringOrNull } from "../fetchJson";
 const baseUrl = "https://me.sayclub.com/bdcst/bdcst-home?bdcstDomainId=";
 const IMAGE_BASE_URL = "https://file.sayclub.com/image-file-container";
 
-interface sayCastSongListProps {
-  body: songItemsProps[];
+interface SayCastSongListRoot {
+  body: SayCastSongItem[];
   hasError: boolean;
   header: {
     chnlCd: string | null;
@@ -18,7 +18,7 @@ interface sayCastSongListProps {
   resultMessage: string;
 }
 
-interface songItemsProps {
+interface SayCastSongItem {
   albumId: string;
   brdate: string;
   cjmsrl: string | null;
@@ -32,23 +32,23 @@ interface songItemsProps {
   trackTitle: string;
 }
 
-const fetchSongList = async (streamerId: string) => {
-  const SONG_LIST_URL = `https://me.sayclub.com/api/bdcst/popularSongList?domainid=${streamerId}`;
-  const res = await fetch(SONG_LIST_URL, {
-    method: "POST",
-    cache: "no-store",
-  });
+const fetchSongList = async (streamerId: string): Promise<SongListItem[] | null> => {
+  if (!streamerId) return null;
 
-  if (!res.ok) return null;
+  try {
+    const songListUrl = `https://me.sayclub.com/api/bdcst/popularSongList?domainid=${streamerId}`;
+    const json: SayCastSongListRoot = await fetchJson(songListUrl, { method: "POST" });
 
-  const json: sayCastSongListProps = await res.json();
-
-  return (json.body ?? []).map((songItem) => ({
-    albumImage: null,
-    title: songItem.trackTitle,
-    artist: songItem.mainArtistNm,
-    time: `${songItem.brdate.slice(11, 13)}:${songItem.brdate.slice(14, 16)}`,
-  }));
+    return (json.body ?? []).map((songItem) => ({
+      albumImage: null,
+      title: songItem.trackTitle,
+      artist: songItem.mainArtistNm,
+      time: `${songItem.brdate.slice(11, 13)}:${songItem.brdate.slice(14, 16)}`,
+    }));
+  } catch (err) {
+    console.error("[SayCastMeta] 선곡표 조회 실패:", err);
+    return null;
+  }
 };
 
 export const SayCastMetaFetcher: MetaFetcher = {
@@ -61,21 +61,23 @@ export const SayCastMetaFetcher: MetaFetcher = {
       const title = optStringOrNull(current, "musicTitle");
       const artist = optStringOrNull(current, "subTitle");
       const domainid = optStringOrNull(current, "domainid");
-      const homepageUrl = `${baseUrl}${domainid}`;
-      const thumbnailUrl = optStringOrNull(current, "bnrImagePath");
-      const fullThumbnailUrl = `${IMAGE_BASE_URL}/${thumbnailUrl}`;
+      const homepageUrl = domainid ? `${baseUrl}${domainid}` : null;
 
-      const songList = (await fetchSongList(domainid ?? "")) ?? null;
+      const thumbnailPath = optStringOrNull(current, "bnrImagePath");
+      const thumbnailUrl = thumbnailPath ? `${IMAGE_BASE_URL}/${thumbnailPath}` : null;
+
+      const songList = domainid ? await fetchSongList(domainid) : null;
+
       return {
         title,
-        artist: artist,
-        thumbnailUrl: fullThumbnailUrl,
+        artist,
+        thumbnailUrl,
         homepageUrl,
         songListUrl: null,
         songList,
       };
     } catch (err) {
-      console.error("[KbsMeta] 메타 조회 실패:", err);
+      console.error("[SayCastMeta] 메타 조회 실패:", err);
       return null;
     }
   },
