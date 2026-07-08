@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { FontSizeProvider } from "@/components/providers/font-size-provider";
 import { ServiceWorkerRegister } from "@/components/pwa/service-worker-register";
+import Script from "next/script";
 
 const BASE_URL = "https://radio.2er0.io";
 
@@ -67,6 +68,14 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="ko" className="h-full antialiased" suppressHydrationWarning>
+      <head>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6002054718389108"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+      </head>
       <body className="min-h-full flex flex-col">
         <ServiceWorkerRegister />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
