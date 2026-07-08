@@ -2,12 +2,13 @@ import { Agent, fetch as undiciFetch } from "undici";
 
 export const fetchJson = async (url: string, init?: RequestInit): Promise<any> => {
   const res = await fetch(url, {
+    ...init,
     headers: {
       Accept: "application/json",
       "User-Agent": "Mozilla/5.0",
+      ...(init?.headers as Record<string, string> | undefined),
     },
-    signal: AbortSignal.timeout(5000),
-    ...init,
+    signal: init?.signal ?? AbortSignal.timeout(5000),
   });
   return res.json();
 };

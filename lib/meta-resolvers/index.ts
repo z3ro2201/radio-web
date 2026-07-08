@@ -8,6 +8,10 @@ import { ObsMetaFetcher } from "./obs";
 import { SbsMetaFetcher } from "./sbs";
 import { SayCastMetaFetcher } from "./saycast";
 import { ShoutcastMetaFetcher } from "./shoutcast";
+import { DemaMetaFetcher } from "./dema";
+import { YtnMetaFetcher } from "./ytn";
+import { EbsMetaFetcher } from "./ebs";
+import { BbsMetaFetcher } from "./bbs";
 
 const fetchers: Record<string, MetaFetcher> = {
   cbsApp: CbsAppMetaFetcher,
@@ -18,7 +22,11 @@ const fetchers: Record<string, MetaFetcher> = {
   obs: ObsMetaFetcher,
   sbs: SbsMetaFetcher,
   sayCast: SayCastMetaFetcher,
+  dema: DemaMetaFetcher,
   shoutcast: ShoutcastMetaFetcher,
+  ytn: YtnMetaFetcher,
+  ebs: EbsMetaFetcher,
+  bbs: BbsMetaFetcher,
   // 확인되는 대로 이 자리에 각자의 MetaFetcher 구현을 추가하면 됨.
 };
 

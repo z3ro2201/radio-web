@@ -7,6 +7,8 @@ import { FavoritesProvider } from "@/components/providers/favorites-provider";
 import { RecentProvider } from "@/components/providers/recent-provider";
 import { getManifest } from "@/lib/manifest";
 
+export const dynamic = "force-dynamic";
+
 const AppsLayout = async ({ children }: { children: React.ReactNode }) => {
   const manifest = await getManifest();
   return (
