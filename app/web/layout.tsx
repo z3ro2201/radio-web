@@ -3,6 +3,8 @@ import React from "react";
 import View from "@/components/layout/view";
 import { StationsProvider } from "@/components/providers/stations-provider";
 import { PlayerProvider } from "@/components/providers/player-provider";
+import { FavoritesProvider } from "@/components/providers/favorites-provider";
+import { RecentProvider } from "@/components/providers/recent-provider";
 import { getManifest } from "@/lib/manifest";
 
 const AppsLayout = async ({ children }: { children: React.ReactNode }) => {
@@ -11,9 +13,13 @@ const AppsLayout = async ({ children }: { children: React.ReactNode }) => {
     <>
       <StationsProvider manifest={manifest}>
         <PlayerProvider>
-          <div className="bg-gray-100">
-            <View children={children} />
-          </div>
+          <RecentProvider>
+            <FavoritesProvider>
+              <div className="bg-gray-100">
+                <View children={children} />
+              </div>
+            </FavoritesProvider>
+          </RecentProvider>
         </PlayerProvider>
       </StationsProvider>
     </>

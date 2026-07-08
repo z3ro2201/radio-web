@@ -22,20 +22,26 @@ export const isRegionFile = (file: StationFile): file is StationRegionFile => {
 
 /**
  * Station 데이터를 Player가 사용하는 BroadcastProps 형태로 변환한다.
- * fileKey(예: "ko.busan")와 station url을 합쳐 channelId로 사용한다.
+ * fileKey(예: "ko.busan")와 station이 배열 안에서 위치한 index를 합쳐 channelId로 사용한다.
  *
- * name은 고유하지 않을 수 있다 (예: 같은 파일 안에 이름이 같은 "SilentNight"이
- * 서로 다른 DJ 방송으로 2개 존재하는 경우가 실제로 있음). url은 채널마다 항상
- * 고유하므로 name 대신 url을 식별자로 사용한다.
+ * name도, url도 고유하다는 보장이 없다:
+ * - name 중복 사례: 같은 파일 안에 "SilentNight"이라는 이름으로 서로 다른 DJ 방송이 2개 존재
+ * - url 중복 사례: 같은 파일 안에 스트림 URL이 완전히 똑같은 서로 다른 방송 항목이 존재 (대전 지역 등)
+ * 반면 배열 안에서의 위치(index)는 항상 유일하므로, 이것만이 확실한 식별자다.
  *
  * streamType이 "direct"가 아닌 경우(fetchJson, fetchText) station.url은 실제로
  * 바로 재생 가능한 스트림 주소가 아니라 별도로 파싱/요청해야 하는 API 주소다.
  * 그 판단/해석은 여기서 미리 하지 않고, streamType과 jsonPath를 그대로 넘겨서
  * 실제 재생 시점(Player)에서 필요할 때만 서버를 통해 해석하도록 한다.
  */
-export const stationToBroadcast = (fileKey: string, station: Station, fileType: StationType): BroadcastProps => ({
+export const stationToBroadcast = (
+  fileKey: string,
+  station: Station,
+  fileType: StationType,
+  index: number,
+): BroadcastProps => ({
   channelName: station.name,
-  channelId: `${fileKey}:${station.url}`,
+  channelId: `${fileKey}:${index}`,
   streamUrl: station.url,
   streamType: station.streamType,
   jsonPath: station.jsonPath ?? null,

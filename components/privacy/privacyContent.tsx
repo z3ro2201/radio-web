@@ -77,7 +77,7 @@ const SectionTitle = ({ item }: { item: privacyIndexListProp }) => {
   return (
     <div className="mt-[40px] mb-[14px] pr-[17px] pl-[24px] flex h-[64px] items-center justify-between font-bold text-xl rounded-lg bg-[#ebf1f7]">
       <h1 className="text-[#0044cc]">{item.text}</h1>
-      <div className="p-1 flex gap-1 bg-white">
+      <div className="p-1 flex gap-1 bg-gray-200 dark:bg-gray-800">
         {item?.icon &&
           item.icon.map((iconName, key) => {
             const icon = iconList.find((item) => item?.iconName === iconName);

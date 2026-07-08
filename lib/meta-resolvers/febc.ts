@@ -1,22 +1,5 @@
 import { MetaFetcher, NowPlayingInfo, SongListItem } from "./types";
-
-const fetchJson = async (url: string): Promise<any> => {
-  const res = await fetch(url, {
-    headers: {
-      Accept: "application/json",
-      "User-Agent": "Mozilla/5.0",
-    },
-    signal: AbortSignal.timeout(5000),
-  });
-  return res.json();
-};
-
-const optStringOrNull = (obj: any, key: string): string | null => {
-  const v = obj?.[key];
-  if (v === undefined || v === null) return null;
-  const s = String(v);
-  return s === "" || s === "null" ? null : s;
-};
+import { fetchJson, optStringOrNull } from "../fetchJson";
 
 export const FebcMetaFetcher: MetaFetcher = {
   fetchNowPlaying: async (metaUrl: string): Promise<NowPlayingInfo | null> => {

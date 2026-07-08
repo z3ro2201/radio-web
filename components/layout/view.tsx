@@ -14,7 +14,7 @@ const NavigatorList = [
 
 const View = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="container mx-auto max-w-xl h-screen flex flex-col bg-white">
+    <div className="container mx-auto max-w-xl h-screen flex flex-col bg-white dark:bg-gray-800">
       <main className="flex-1 overflow-y-auto" style={{ paddingBottom: "var(--navigator-height, 7.5rem)" }}>
         {children}
       </main>
